@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+
+{% block form %}
+<div class="upload_form">
+	<form action="/data" method="post" enctype="multipart/form-data" id="form">
+		<div class="search_world_field">
+			<input placeholder="type world...." type="text" name="searched_word" class="input" id="text">
+		</div>
+		<div class="upload_form_title">
+			<input type="file" name="file" value="Upload your file" id="document">
+		</div>
+		<button type="submit" value="Done!">Done!</button>
+	</form>
+	{{ error }}
+</div>
+{% endblock %}

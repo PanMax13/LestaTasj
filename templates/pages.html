@@ -1,0 +1,18 @@
+{% extends 'result.html' %}
+
+{% block pages %}
+<div class="results">
+	<div class="word result">Для слова {{word}}</div>
+	<div class="filename result"> в файле {{filename}}</div>
+	<div class="count result"> найдено {{value}} слов на страницах: </div>
+</div>
+
+{% for page in pages %}
+	<div class="page_number">
+		<h3>Страница {{page + 1}}</h3>
+		<div class="page_text">
+			{{texts[pages.index(page)]|safe}}
+		</div>
+	</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,19 @@
+.results {
+    width: 80%;
+    position: relative;
+    margin: 20px auto;
+    text-align: center;
+    border: 0.01px solid gray;
+    border-radius: 20px;
+    box-shadow:1px 5px 1px 1px #d3d3d3;
+}
+
+.result {
+    display: inline-block;
+    text-align: center;
+    margin: 20px;
+}
+
+span {
+    font-weight: bold;
+}
