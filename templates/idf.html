@@ -1,0 +1,26 @@
+{% extends 'result.html' %}
+
+{% block pages %}
+<div class="results">
+	<div class="word result">Для слова {{word}}</div>
+	<div class="filename result"> в файлах {{filename}}</div>
+	<div class="count result"> найдено {{value}} слов</div>
+	<div class="count result"> idf: {{ idf }} </div>
+</div>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Слово</th>
+      <th>Колличество</th>
+      <th>IDF</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ word }}</td>
+      <td>{{ value }}</td>
+      <td>{{ idf }}</td>
+    </tr>
+</table>
+{% endblock %}

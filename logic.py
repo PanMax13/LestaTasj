@@ -6,6 +6,7 @@ from pydantic.v1.typing import update_field_forward_refs
 
 def find_words(path, word):
     pages = []
+    words = []
     word = word.lower()
     word_counter = 0
 
@@ -41,5 +42,33 @@ def show_text(path, page):
         text = pdf.pages[page]
 
         return text.extract_text()
+
+
+def count_words(path):
+    words = 0
+    with open(path, 'rb') as file:
+        pdf = PdfReader(file)
+
+        pages = pdf.pages
+
+        for page in range(len(pages)):
+            page_ = pdf.pages[page]
+            text = page_.extract_text().lower()
+
+            text = text.split(' ')
+
+        return len(text)
+
+
+def get_tf(path, searched_word):
+    words = count_words(path)
+
+    return searched_word / words
+
+
+
+
+
+
 
 
