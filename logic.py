@@ -4,12 +4,14 @@ from PyPDF2 import PdfReader
 from pydantic.v1.typing import update_field_forward_refs
 
 
+# исчем слова в документе
 def find_words(path, word):
-    pages = []
+    pages = [] # страницы, в которых содержатся искомые слова
     words = []
     word = word.lower()
-    word_counter = 0
+    word_counter = 0 # подсчет слов
 
+    # открываем текстовый документ, полученный на входе
     with open(path, 'rb') as file:
         pdf = PdfReader(file)
 
@@ -21,20 +23,23 @@ def find_words(path, word):
             if not text:
                 continue
 
+            # форматируем текс, убираем все символы кроме букв
             text = re.sub(r'[^a-zA-Zа-яA-ЯёЁ\s]', '', text.lower())
             text = text.split()
 
-
+            # считаем искомые слова на странице
             count = text.count(word)
+
 
             if count > 0:
                 pages.append(i)
 
                 word_counter += count
-    print(pages, word_counter)
+
     return pages, word_counter
 
 
+# выводим искомый текст
 def show_text(path, page):
     with open(path, 'rb') as file:
         pdf = PdfReader(file)
@@ -44,6 +49,7 @@ def show_text(path, page):
         return text.extract_text()
 
 
+# считаем все слова в документе
 def count_words(path):
     words = 0
     with open(path, 'rb') as file:
@@ -59,7 +65,7 @@ def count_words(path):
 
         return len(text)
 
-
+# расчитываем tf
 def get_tf(path, searched_word):
     words = count_words(path)
 

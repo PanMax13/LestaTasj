@@ -23,12 +23,15 @@ async def upload_data(
         files: List[UploadFile] = Form(...),
         searched_word: str = Form(...),
 ):
+    # получаем логи из формы
     form = await request.form()
     print(form)
-
+    # создаем массив с перечнем путем сохраненных файлов
     saved_files = []
-    word = searched_word
 
+    word = searched_word # искомое слово в документах
+
+    # скачиваем файлы
     for file in files:
         filename = file.filename
 
@@ -38,6 +41,9 @@ async def upload_data(
             file_location.write(file.file.read())
 
             saved_files.append(location)
+
+    # если длина длина массива 1, то есть на вход получен один файл,
+    # то выполняем посик слов в документе и выводвим функциюю для вычисления tf
     if len(saved_files) == 1:
         location = saved_files[0]
         pages, words = find_words(location, word)
@@ -49,7 +55,6 @@ async def upload_data(
 
             texts.append(text)
 
-        all_words = count_words(location)
         tf = get_tf(location, words)
 
         context = {
@@ -63,10 +68,16 @@ async def upload_data(
 
         return template.TemplateResponse(request=request, name='pages.html', context=context)
 
+    # если прикреплено >1 документа, расичтываем idf
     else:
         true_words = []
 
         words = 0
+        # для каждого сохраненного файла расчитываем колличество искомых слов в каждом документк
+        # извлекаем текст постранично и получаем текст кажддого документа
+        # после чего вычисляем, содержится ли искомое слово в ним.
+        # Если слово найдено, добавляем его в массив true_words, после чего вычисляем idf по формуле
+        # idf = log(N/(1 + B)), где N - число документов, 1 + B - число документов, в которых содержится искомое слово
         for file in saved_files:
             count = find_words(file, word)[1]
             words += count
@@ -82,7 +93,7 @@ async def upload_data(
                 if word.lower() in full_text:
                     true_words.append(file)
 
-        print(len(true_words))
+
         idf = log(len(files) / len(true_words))
         context = {
             'word': word,
